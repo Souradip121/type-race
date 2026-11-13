@@ -1,0 +1,13 @@
+node_modules/
+.DS_Store
+Thumbs.db
+.env
+.env.*
+*.log
+# local tooling, design process and Supabase CLI temp (contains the account email)
+.claude/
+.impeccable/
+PRODUCT.md
+DESIGN.md
+DESIGN.json
+supabase/

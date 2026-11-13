@@ -1,0 +1,17 @@
+{
+  "name": "type-race",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Race your classmates typing real code (C, Python, Java). Static site + Supabase Realtime.",
+  "type": "module",
+  "license": "MIT",
+  "scripts": {
+    "test": "node --test",
+    "snippets:sql": "node scripts/snippets-sql.mjs",
+    "check:live": "node scripts/live-check.mjs",
+    "serve": "python -m http.server 8799 --bind 127.0.0.1"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

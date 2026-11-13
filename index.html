@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
+<title>Type Race · race your classmates typing real code</title>
+<meta name="description" content="Don't brag about your typing speed. Prove it. Race your classmates live, typing real C, Python and Java snippets. Free, no sign-up, works on phones.">
+<meta name="theme-color" content="#021842">
+<meta property="og:title" content="Type Race: race your classmates typing real code">
+<meta property="og:description" content="Don't brag about your typing speed. Prove it. Live races on C, Python and Java snippets.">
+<meta property="og:image" content="assets/img/og.png">
+<link rel="icon" href="assets/img/icon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/tiny5-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/jetbrains-mono-latin-wght.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="assets/css/typerace.css">
+<script defer src="config.js"></script>
+<script defer src="vendor/supabase.js"></script>
+<script type="module" src="assets/js/app.js"></script>
+</head>
+<body>
+<!--
+THESIS: The room is an 8-bit race: every screen is a game screen (lobby, track, podium), never a typing-test form. Refuses the typing-site default of a grey text box with a WPM counter.
+OWN-WORLD: Deep navy #021842; sky #2894EB pixel frames with stepped corners; yellow #FCDD3A, red #F84D55, sky #53C0FB, white cars on dashed roads; Tiny5 pixel face for the game voice, JetBrains Mono only for the code.
+STORY: Open the link, see your classmates' cars, press Start, type the snippet as your car crosses the road, land on the podium, rematch or share the card.
+FIRST VIEWPORT: (lobby) "Type Race" between checkered flags; Room card with the class name huge; C / Python / Java chips; racers each with a pixel car; yellow Start plate with 3 · 2 · 1 under it.
+FORM: Pinned by the user: concept D "8-bit pixel" (ui-concepts/typerace/typerace_d_pixel.png). No seed roll: user-pinned.
+FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+-->
+<main class="app">
+  <div id="view" aria-live="polite"></div>
+</main>
+<!-- Focused on button taps so phone keyboards are already open when a race starts. -->
+<textarea id="primer" class="sr" tabindex="-1" aria-hidden="true" autocapitalize="off" autocomplete="off" autocorrect="off" spellcheck="false"></textarea>
+<noscript><p style="color:#fff;font:18px sans-serif;text-align:center;padding:40px">Type Race needs JavaScript.</p></noscript>
+</body>
+</html>
