@@ -95,7 +95,7 @@ const AVATARS = [
       '.cccccccccccccc.',
       'cccccccccccccccc',
       'cccccccccccccccc',
-    ], h: '#14306E', s: '#C68642', c: '#4FBAFE' },
+    ], h: '#3A2418', s: '#C68642', c: '#4FBAFE' },
   { // 3 glasses
     grid: [
       '................',
@@ -105,8 +105,8 @@ const AVATARS = [
       '..hhhhhhhhhhhh..',
       '..hhsssssssshh..',
       '..hssssssssssh..',
-      '..sggggggggggs..',
-      '..sgsegssgesgs..',
+      '..sggggssggggs..',
+      '..sgseggggesgs..',
       '..sggggssggggs..',
       '...sssmmmmsss...',
       '....ssssssss....',
@@ -438,7 +438,7 @@ const DIGITS = {
   7: ['XXXXXX', 'XXXXXX', '....XX', '...XX.', '..XX..', '..XX..', '.XX...', '.XX...', '.XX...'],
   8: ['.XXXX.', 'XXXXXX', 'XX..XX', 'XXXXXX', '.XXXX.', 'XX..XX', 'XX..XX', 'XXXXXX', '.XXXX.'],
   9: ['.XXXX.', 'XXXXXX', 'XX..XX', 'XX..XX', 'XXXXXX', '.XXXXX', '....XX', 'XXXXXX', '.XXXX.'],
-  '%': ['....', '....', '....', 'XX.X', 'XX.X', '..X.', '.X..', 'X.XX', 'X.XX'],
+  '%': ['......', '......', '......', 'XX...X', 'XX..X.', '...X..', '..X...', '.X..XX', 'X...XX'],
 };
 export function numSVG(n, color = 'currentColor', cls = '') {
   const str = String(n).replace(/[^0-9%]/g, '') || '0';
@@ -480,6 +480,9 @@ export function installFrames(root = document.documentElement) {
   set('--f-yellow-down', frameURL({ stroke: C.yellow, fill: C.yellow }));
   set('--f-outline', hollowURL('#3C8FD0'));
   set('--f-avatar', frameURL({ stroke: C.skyLine, fill: '#0B2F6B' }));
+  set('--f-av-sky', hollowURL(C.skyLine));
+  set('--f-av-red', hollowURL(C.red));
+  set('--f-av-yellow', hollowURL(C.yellow));
   set('--f-avatar-red', frameURL({ stroke: C.red, fill: '#3A1630' }));
   set('--f-avatar-yellow', frameURL({ stroke: C.sky, fill: '#0B2F6B' }));
   set('--f-pod-1', frameURL({ stroke: C.yellow, fill: C.yellow }));

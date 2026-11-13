@@ -173,9 +173,9 @@ svg.px.car { height: auto; }
 .chip:disabled:not([aria-checked="true"]) { opacity: .45; }
 
 /* ------------------------------------------------------------------ home */
-.tagline { margin: -2px 0 20px; text-align: center; font: 600 21px/1.3 var(--pix); color: var(--white); text-wrap: balance; }
+.tagline { margin: -4px 0 16px; text-align: center; font: 600 21px/1.3 var(--pix); color: var(--white); text-wrap: balance; }
 .tagline b { color: var(--yellow); font-weight: 700; }
-.hero-road { margin: 2px 0 20px; }
+.hero-road { margin: 0 0 16px; }
 .hero-road .lanes { --lane-gap: 10px; }
 .hero-road .lane { grid-template-columns: 1fr; }
 .hero-road .road { height: 30px; }
@@ -185,13 +185,16 @@ svg.px.car { height: auto; }
 .hero-road .lane:nth-child(3) .rider { animation: inch 10s steps(40) infinite; }
 @property --p { syntax: '<number>'; inherits: true; initial-value: 0; }
 @keyframes inch { from { --p: 0; } 85%, to { --p: 1; } }
-.form-card { padding: 14px 14px 16px; display: grid; gap: 16px; }
+.form-card { padding: 10px 12px 12px; display: grid; gap: 12px; }
 .form-card .chips { gap: 10px; }
-.or { display: flex; align-items: center; gap: 12px; margin: 22px 0 14px; color: var(--muted); font: 500 16px/1 var(--pix); }
+.or { display: flex; align-items: center; gap: 12px; margin: 16px 0 10px; color: var(--muted); font: 500 16px/1 var(--pix); }
 .or::before, .or::after { content: ''; flex: 1; height: 2px; background: repeating-linear-gradient(90deg, var(--line-dim) 0 8px, transparent 8px 14px); }
 .join-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: stretch; }
 .join-row .btn { width: auto; min-width: 104px; min-height: 54px; }
-.solo-btn { margin-top: 14px; }
+.solo-btn { margin-top: 12px; }
+.screen-home .field { min-height: 50px; }
+.screen-home .chip { min-height: 48px; }
+.screen-home .btn-outline { min-height: 50px; }
 .fineprint { margin: 22px 4px 0; color: var(--muted); font: 500 15px/1.45 var(--pix); text-align: center; text-wrap: pretty; }
 .foot { margin-top: auto; padding-top: 26px; text-align: center; color: var(--muted); font: 500 14px/1.5 var(--pix); }
 .foot a { color: var(--sky); }
@@ -219,13 +222,19 @@ svg.px.car { height: auto; }
 .racer.enter { animation: pop-in .35s steps(4) both; }
 @keyframes pop-in { from { translate: 18px 0; } to { translate: 0 0; } }
 
-.av {
-  --f: var(--f-avatar);
-  width: 54px; height: 54px; padding: 0; display: grid; place-items: end stretch; flex: none; overflow: hidden;
+.av { /* portrait drawn edge to edge, a stroke-only pixel frame on top */
+  --avs: var(--f-av-sky); --avfill: #0B2F6B;
+  position: relative; width: 54px; height: 54px; padding: 0; flex: none;
+  border: 0; border-image: none; background: var(--avfill);
+  clip-path: polygon(6px 0, calc(100% - 6px) 0, calc(100% - 6px) 2px, calc(100% - 2px) 2px, calc(100% - 2px) 6px, 100% 6px, 100% calc(100% - 6px), calc(100% - 2px) calc(100% - 6px), calc(100% - 2px) calc(100% - 2px), calc(100% - 6px) calc(100% - 2px), calc(100% - 6px) 100%, 6px 100%, 6px calc(100% - 2px), 2px calc(100% - 2px), 2px calc(100% - 6px), 0 calc(100% - 6px), 0 6px, 2px 6px, 2px 2px, 6px 2px);
 }
-.av svg { width: 100%; height: auto; }
+.av svg { position: absolute; left: 2px; bottom: 2px; width: calc(100% - 4px); height: auto; clip-path: polygon(4px 0, calc(100% - 4px) 0, calc(100% - 4px) 2px, calc(100% - 2px) 2px, calc(100% - 2px) 4px, 100% 4px, 100% calc(100% - 4px), calc(100% - 2px) calc(100% - 4px), calc(100% - 2px) calc(100% - 2px), calc(100% - 4px) calc(100% - 2px), calc(100% - 4px) 100%, 4px 100%, 4px calc(100% - 2px), 2px calc(100% - 2px), 2px calc(100% - 4px), 0 calc(100% - 4px), 0 4px, 2px 4px, 2px 2px, 4px 2px); }
+.av::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  border: 8px solid transparent; border-image: var(--avs) 4 / 8px stretch;
+}
 button.av { cursor: pointer; }
-button.av:hover { --f: var(--f-avatar-yellow); }
+button.av:hover { --avs: var(--f-av-yellow); }
 .av.sm { width: 46px; height: 46px; }
 
 
@@ -412,19 +421,18 @@ button.av:hover { --f: var(--f-avatar-yellow); }
 .pod { display: flex; flex-direction: column; align-items: center; min-width: 0; }
 .pod .crown { width: 30px; height: auto; margin-bottom: 5px; }
 .pod .av { margin-bottom: -2px; position: relative; z-index: 1; }
-.pod.p1 .av { --f: var(--f-avatar-yellow); }
-.pod.p2 .av { --f: var(--f-avatar-red); }
-.pod .block { --u: 3px; width: 100%; padding: 2px 0 0; display: flex; flex-direction: column; align-items: center; }
+.pod.p2 .av { --avs: var(--f-av-red); --avfill: #3A1630; }
+.pod .block { --u: 2px; width: 100%; padding: 2px 0 0; display: flex; flex-direction: column; align-items: center; }
 .pod.p1 .block { --f: var(--f-pod-1); }
 .pod.p2 .block { --f: var(--f-pod-2); }
 .pod.p3 .block { --f: var(--f-pod-3); }
-.pod .num { --f: var(--f-badge); --u: 2px; min-width: 30px; padding: 0 1px; font: 400 18px/1.05 var(--pix); text-align: center; margin: 1px 0 3px; }
+.pod .num { border: 0; border-image: none; background: var(--ink); width: 22px; height: 22px; display: grid; place-items: center; font: 400 15px/1 var(--pix); margin: 2px 0 4px; }
 .pod.p1 .num { color: var(--yellow); } .pod.p2 .num { color: var(--red); } .pod.p3 .num { color: var(--sky); }
-.pod .panel { --f: var(--f-pod-panel); --u: 2px; width: calc(100% + 6px); margin: 0 -3px -3px; padding: 4px 2px 2px; text-align: center; }
-.pod .panel .nm { font: 400 17px/1.15 var(--pix); color: var(--white); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pod .panel .w { font: 400 24px/1.05 var(--pix); font-variant-numeric: tabular-nums; }
-.pod.p1 .panel { padding-block: 6px 6px; }
-.pod.p2 .panel { padding-block: 4px 2px; }
+.pod .panel { --f: var(--f-pod-panel); --u: 1.5px; width: calc(100% + 4px); margin: 0 -2px -2px; padding: 0 2px; text-align: center; }
+.pod .panel .nm { font: 400 15px/1.1 var(--pix); color: var(--white); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pod .panel .w { font: 400 22px/1 var(--pix); font-variant-numeric: tabular-nums; }
+.pod.p1 .panel { padding-block: 7px 6px; }
+.pod.p2 .panel { padding-block: 2px 1px; }
 .pod.p1 .w { color: var(--yellow); } .pod.p2 .w { color: var(--red); } .pod.p3 .w { color: var(--sky); }
 .pod.empty { visibility: hidden; }
 .rest { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 6px; }
