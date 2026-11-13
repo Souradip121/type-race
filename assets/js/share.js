@@ -89,9 +89,10 @@ export async function drawCard(r) {
   pxFrame(ctx, 40, 40, W - 80, H - 80, 8, '#123C82', C.navy);
 
   // title
-  flag(ctx, 170, 128, 7);
-  flag(ctx, 826, 128, 7, true);
-  text(ctx, 'Type Race', W / 2, 200, { size: 96, color: C.yellow });
+  flag(ctx, 150, 118, 7);
+  flag(ctx, 846, 118, 7, true);
+  const wm = GRIDS.wordRows('Type Race');
+  grid(ctx, wm, { X: C.yellow }, W / 2 - (wm[0].length * 9) / 2, 112, 9);
 
   // result card
   const cx = 110; const cy = 270; const cw = W - 220; const ch = 900;
@@ -128,19 +129,21 @@ export async function drawCard(r) {
   ctx.fillStyle = '#1D66AE';
   ctx.fillRect(cx + 60, cy + 740, cw - 120, 4);
   grid(ctx, GRIDS.SIGHT, { S: C.sky }, W / 2 - 190, cy + 770, 9);
-  text(ctx, `${Math.round(r.accuracy)}%`, W / 2 - 70, cy + 828, { size: 76, color: C.white, align: 'left' });
+  const acc = String(Math.round(r.accuracy)) + '%';
+  const ar = Array.from({ length: 9 }, (_, y) => [...acc].map((d) => GRIDS.DIGITS[d][y]).join('.'));
+  grid(ctx, ar, { X: C.white }, W / 2 - 70, cy + 772, 7);
   text(ctx, 'accuracy', W / 2 - 70, cy + 872, { size: 42, color: C.sky, align: 'left', weight: 600 });
 
   // what was typed
   const what = `${langLabel(r.lang)} · ${r.title}${r.room ? ` · ${r.room}` : ''}`;
   const sz = fitText(ctx, what, W - 200, 46);
-  text(ctx, what, W / 2, cy + ch + 66, { size: sz, color: '#8AA6D6', weight: 600 });
+  text(ctx, what, W / 2, cy + ch + 58, { size: sz, color: '#8AA6D6', weight: 600 });
 
   // podium (multiplayer) or the player's car on a road (solo)
-  const base = 1690;
+  const base = 1700;
   if (r.podium && r.podium.length) {
     const cols = { 1: C.yellow, 2: C.red, 3: C.sky };
-    const slots = [{ p: 2, x: 150, h: 170 }, { p: 1, x: 410, h: 230 }, { p: 3, x: 670, h: 130 }];
+    const slots = [{ p: 2, x: 150, h: 240 }, { p: 1, x: 410, h: 280 }, { p: 3, x: 670, h: 210 }];
     for (const sl of slots) {
       const e = r.podium.find((q) => q.place === sl.p);
       if (!e) continue;
@@ -150,11 +153,13 @@ export async function drawCard(r) {
       text(ctx, String(sl.p), sl.x + 130, top + 56, { size: 50, color: C.ink });
       const nm = String(e.name).slice(0, 14);
       const ns = fitText(ctx, nm, 220, 38);
-      text(ctx, nm, sl.x + 130, top + 70 + Math.min(54, (sl.h - 82) / 2 + 6), { size: ns, color: C.white, weight: 600 });
-      if (sl.h > 150) text(ctx, String(Math.round(e.wpm)), sl.x + 130, top + 70 + Math.min(110, sl.h - 92), { size: 44, color: cols[sl.p] });
-      pxFrame(ctx, sl.x + 80, top - 112, 100, 100, 5, cols[sl.p], '#0B2F6B');
-      avatar(ctx, e.avatar || 0, sl.x + 94, top - 98, 6);
-      if (sl.p === 1) grid(ctx, ['Y....Y....Y', 'YY..YYY..YY', 'YYY.YYY.YYY', 'YYYYYYYYYYY', 'DDDDDDDDDDD'], { Y: C.yellow, D: '#C9A300' }, sl.x + 97, top - 160, 6);
+      text(ctx, nm, sl.x + 130, top + 122, { size: ns, color: C.white, weight: 600 });
+      text(ctx, String(Math.round(e.wpm)), sl.x + 130, top + 178, { size: 46, color: cols[sl.p] });
+      pxFrame(ctx, sl.x + 80, top - 106, 100, 100, 5, cols[sl.p], '#0B2F6B');
+      ctx.save(); ctx.beginPath(); ctx.rect(sl.x + 90, top - 96, 80, 80); ctx.clip();
+      avatar(ctx, e.avatar || 0, sl.x + 90, top - 96, 5);
+      ctx.restore();
+      if (sl.p === 1) grid(ctx, ['Y....Y....Y', 'YY..YYY..YY', 'YYY.YYY.YYY', 'YYYYYYYYYYY', 'DDDDDDDDDDD'], { Y: C.yellow, D: '#C9A300' }, sl.x + 97, top - 150, 6);
     }
   } else {
     ctx.fillStyle = '#0B2C68';

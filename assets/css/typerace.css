@@ -99,7 +99,11 @@ svg.px.car { height: auto; }
   margin: 0; font: 400 clamp(32px, 10.4vw, 42px)/1 var(--pix); color: var(--yellow); white-space: nowrap;
   letter-spacing: .01em; display: flex; align-items: center; gap: 12px;
 }
-.logo .flag { width: 30px; height: 30px; }
+.logo .flag { width: 30px; height: 30px; flex: none; }
+.logo .wordmark { height: clamp(30px, 9.4vw, 38px); width: auto; flex: none; }
+.mast.has-back .logo .wordmark { height: clamp(26px, 8vw, 34px); }
+.race-mast .logo .wordmark { height: 30px; }
+.screen-race.tight .race-mast .logo .wordmark { height: 22px; }
 .logo .flag:last-child { transform: scaleX(-1); }
 .mast.has-back { display: grid; grid-template-columns: 34px 1fr 34px; gap: 4px; justify-items: center; }
 .mast.has-back .logo { font-size: clamp(28px, 8.6vw, 38px); gap: 9px; }
@@ -123,7 +127,7 @@ svg.px.car { height: auto; }
   font: 600 22px/1.2 var(--pix); color: var(--text);
   outline: none; border-radius: 0;
 }
-.field::placeholder { color: #5D7DB4; }
+.field::placeholder { color: #7F9BCB; }
 .field:focus { --f: var(--f-field-focus); }
 .field.code-in { text-transform: uppercase; letter-spacing: .18em; }
 .field.code-in::placeholder { letter-spacing: .1em; text-transform: none; }
@@ -171,13 +175,14 @@ svg.px.car { height: auto; }
 /* ------------------------------------------------------------------ home */
 .tagline { margin: -2px 0 20px; text-align: center; font: 600 21px/1.3 var(--pix); color: var(--white); text-wrap: balance; }
 .tagline b { color: var(--yellow); font-weight: 700; }
-.hero-road { margin: 4px 0 24px; }
-.hero-road .lanes { --lane-gap: 12px; }
+.hero-road { margin: 2px 0 20px; }
+.hero-road .lanes { --lane-gap: 10px; }
 .hero-road .lane { grid-template-columns: 1fr; }
-.hero-road .road { height: 34px; }
-.hero-road .lane:nth-child(1) .rider, .hero-road .lane:nth-child(1) .trail { animation: inch 7s steps(28) infinite; }
-.hero-road .lane:nth-child(2) .rider, .hero-road .lane:nth-child(2) .trail { animation: inch 8.5s steps(34) infinite; }
-.hero-road .lane:nth-child(3) .rider, .hero-road .lane:nth-child(3) .trail { animation: inch 10s steps(40) infinite; }
+.hero-road .road { height: 30px; }
+.hero-road .rider, .hero-road .rider .car { width: 46px; }
+.hero-road .lane:nth-child(1) .rider { animation: inch 7s steps(28) infinite; }
+.hero-road .lane:nth-child(2) .rider { animation: inch 8.5s steps(34) infinite; }
+.hero-road .lane:nth-child(3) .rider { animation: inch 10s steps(40) infinite; }
 @property --p { syntax: '<number>'; inherits: true; initial-value: 0; }
 @keyframes inch { from { --p: 0; } 85%, to { --p: 1; } }
 .form-card { padding: 14px 14px 16px; display: grid; gap: 16px; }
@@ -186,7 +191,7 @@ svg.px.car { height: auto; }
 .or::before, .or::after { content: ''; flex: 1; height: 2px; background: repeating-linear-gradient(90deg, var(--line-dim) 0 8px, transparent 8px 14px); }
 .join-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: stretch; }
 .join-row .btn { width: auto; min-width: 104px; min-height: 54px; }
-.solo-row { margin-top: 18px; display: flex; justify-content: center; }
+.solo-btn { margin-top: 14px; }
 .fineprint { margin: 22px 4px 0; color: var(--muted); font: 500 15px/1.45 var(--pix); text-align: center; text-wrap: pretty; }
 .foot { margin-top: auto; padding-top: 26px; text-align: center; color: var(--muted); font: 500 14px/1.5 var(--pix); }
 .foot a { color: var(--sky); }
@@ -216,13 +221,13 @@ svg.px.car { height: auto; }
 
 .av {
   --f: var(--f-avatar);
-  width: 54px; height: 54px; padding: 0; display: grid; place-items: center; flex: none;
+  width: 54px; height: 54px; padding: 0; display: grid; place-items: end stretch; flex: none; overflow: hidden;
 }
-.av svg { width: 37px; height: 37px; }
+.av svg { width: 100%; height: auto; }
 button.av { cursor: pointer; }
 button.av:hover { --f: var(--f-avatar-yellow); }
 .av.sm { width: 46px; height: 46px; }
-.av.sm svg { width: 30px; height: 30px; }
+
 
 .start-wrap { margin-top: 18px; }
 .start-hint { margin: 12px 0 0; text-align: center; font: 600 20px/1 var(--pix); color: var(--sky); letter-spacing: .12em; }
@@ -269,7 +274,7 @@ button.av:hover { --f: var(--f-avatar-yellow); }
 .k { color: var(--sky-ink); }
 .d { color: var(--purple); }
 .s { color: var(--yellow); }
-.n { color: var(--red-soft); }
+.n { color: var(--white); }
 .p { color: #B9CBEA; }
 
 .typer {
@@ -296,7 +301,7 @@ button.av:hover { --f: var(--f-avatar-yellow); }
 .stat .sight { width: 34px; height: 34px; }
 .stat b { display: flex; align-items: flex-end; gap: 3px; height: 38px; color: var(--white); }
 .stat b .num { height: 36px; width: auto; }
-.stat b i { font: 400 22px/1 var(--pix); font-style: normal; color: var(--white); }
+
 .stat .wpm-n { color: var(--white); }
 .stat small { display: block; font: 600 18px/1 var(--pix); color: var(--sky); margin-top: 2px; }
 .stats .sep { width: 2px; height: 52px; background: var(--line-dim); }
@@ -306,7 +311,8 @@ button.av:hover { --f: var(--f-avatar-yellow); }
 .lane .who { font: 600 18px/1 var(--pix); color: var(--white); margin: 0 0 6px 2px; display: flex; justify-content: space-between; gap: 8px; }
 .lane .who small { color: var(--muted); font-size: 15px; font-weight: 500; }
 .road {
-  position: relative; height: 38px;
+  position: relative; height: 38px; container-type: inline-size;
+  clip-path: inset(-14px 0 -2px 0);
   background:
     linear-gradient(var(--road-edge), var(--road-edge)) top / 100% 2px no-repeat,
     linear-gradient(var(--road-edge), var(--road-edge)) bottom / 100% 3px no-repeat,
@@ -321,17 +327,18 @@ button.av:hover { --f: var(--f-avatar-yellow); }
   content: ''; position: absolute; right: 4px; top: 4px; bottom: 5px; width: 12px;
   background: conic-gradient(#F3F8FF 25%, var(--ink) 0 50%, #F3F8FF 0 75%, var(--ink) 0) 0 0 / 12px 12px;
 }
-.trail {
-  position: absolute; left: 0; top: -6px; height: 5px;
-  width: calc((100% - 58px) * var(--p, 0) + 30px);
-  background: linear-gradient(90deg, var(--trail) calc(100% - 26px), transparent);
-  transition: width .3s linear;
+.rider {
+  position: absolute; bottom: 3px; left: 0; width: 52px;
+  translate: calc((100cqw - 58px) * var(--p, 0)) 0;
+  transition: translate .3s steps(5, jump-end);
 }
-.rider { position: absolute; bottom: 3px; left: calc((100% - 58px) * var(--p, 0)); width: 52px; transition: left .3s linear; }
+.trail { /* rides with the car; the road's clip-path cuts it off at the start line */
+  position: absolute; right: 24px; top: -12px; height: 5px; width: 100cqw;
+  background: linear-gradient(270deg, transparent, var(--trail) 26px);
+}
 .rider .car { width: 52px; height: auto; }
 .lane.ghost .rider { opacity: .45; }
-.lane.ghost .trail { opacity: .5; }
-.lane.done .rider { left: calc(100% - 58px); }
+.lane.done .rider { translate: calc(100cqw - 58px) 0; }
 .lane.me .who { color: var(--yellow); }
 
 .countdown {
@@ -365,7 +372,7 @@ button.av:hover { --f: var(--f-avatar-yellow); }
 .screen-race.tight .lane .who { font-size: 14px; margin-bottom: 3px; }
 .screen-race.tight .road { height: 28px; }
 .screen-race.tight .rider, .screen-race.tight .rider .car { width: 40px; }
-.screen-race.tight .trail { top: -4px; height: 3px; }
+.screen-race.tight .trail { top: -7px; height: 3px; right: 18px; }
 
 /* ------------------------------------------------------------------ results */
 .result-card { padding: 10px 10px 12px; text-align: center; position: relative; }
@@ -395,7 +402,8 @@ button.av:hover { --f: var(--f-avatar-yellow); }
 .rule { height: 2px; background: var(--line-dim); margin: 0 6px 10px; }
 .acc-row { display: flex; justify-content: center; align-items: center; gap: 14px; }
 .acc-row .sight { width: 36px; height: 36px; }
-.acc-row b { display: block; font: 400 34px/1 var(--pix); color: var(--white); text-align: left; }
+.acc-row b { display: block; height: 30px; color: var(--white); text-align: left; margin-bottom: 4px; }
+.acc-row b .num { height: 30px; width: auto; }
 .acc-row small { display: block; font: 400 20px/1 var(--pix); color: var(--sky); text-align: left; }
 .result-sub { margin: 8px 0 0; color: var(--muted); font: 400 14px/1.3 var(--pix); }
 .result-error { margin-top: 12px; }
@@ -403,20 +411,20 @@ button.av:hover { --f: var(--f-avatar-yellow); }
 .podium { display: grid; grid-template-columns: 1fr 1.08fr 1fr; align-items: end; gap: 10px; margin: 12px 0 0; }
 .pod { display: flex; flex-direction: column; align-items: center; min-width: 0; }
 .pod .crown { width: 30px; height: auto; margin-bottom: 5px; }
-.pod .av { margin-bottom: 7px; }
+.pod .av { margin-bottom: -2px; position: relative; z-index: 1; }
 .pod.p1 .av { --f: var(--f-avatar-yellow); }
 .pod.p2 .av { --f: var(--f-avatar-red); }
 .pod .block { --u: 3px; width: 100%; padding: 2px 0 0; display: flex; flex-direction: column; align-items: center; }
 .pod.p1 .block { --f: var(--f-pod-1); }
 .pod.p2 .block { --f: var(--f-pod-2); }
 .pod.p3 .block { --f: var(--f-pod-3); }
-.pod .num { --f: var(--f-badge); --u: 2px; min-width: 36px; padding: 0 2px; font: 400 24px/1.1 var(--pix); text-align: center; margin: 2px 0 6px; }
+.pod .num { --f: var(--f-badge); --u: 2px; min-width: 30px; padding: 0 1px; font: 400 18px/1.05 var(--pix); text-align: center; margin: 1px 0 3px; }
 .pod.p1 .num { color: var(--yellow); } .pod.p2 .num { color: var(--red); } .pod.p3 .num { color: var(--sky); }
-.pod .panel { --f: var(--f-pod-panel); --u: 2px; width: calc(100% + 6px); margin: 0 -3px -3px; padding: 6px 2px 4px; text-align: center; }
-.pod .panel .nm { font: 600 19px/1.2 var(--pix); color: var(--white); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pod .panel .w { font: 700 28px/1.1 var(--pix); font-variant-numeric: tabular-nums; }
-.pod.p1 .panel { padding-block: 12px 10px; }
-.pod.p2 .panel { padding-block: 6px 4px; }
+.pod .panel { --f: var(--f-pod-panel); --u: 2px; width: calc(100% + 6px); margin: 0 -3px -3px; padding: 4px 2px 2px; text-align: center; }
+.pod .panel .nm { font: 400 17px/1.15 var(--pix); color: var(--white); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pod .panel .w { font: 400 24px/1.05 var(--pix); font-variant-numeric: tabular-nums; }
+.pod.p1 .panel { padding-block: 6px 6px; }
+.pod.p2 .panel { padding-block: 4px 2px; }
 .pod.p1 .w { color: var(--yellow); } .pod.p2 .w { color: var(--red); } .pod.p3 .w { color: var(--sky); }
 .pod.empty { visibility: hidden; }
 .rest { list-style: none; margin: 18px 0 0; padding: 0; display: grid; gap: 6px; }

@@ -154,8 +154,8 @@ try {
     A.waitFor(`document.querySelector('#rematch') && !document.querySelector('#rematch').disabled`, 15000),
     B.waitFor(`document.querySelector('#rematch') && !document.querySelector('#rematch').disabled`, 15000),
   ]);
-  const read = (p) => p.eval(`({ ribbon: document.querySelector('.ribbon').textContent, big: document.querySelector('.big-wpm').textContent,
-    acc: document.querySelector('.acc-row b').textContent,
+  const read = (p) => p.eval(`({ ribbon: document.querySelector('.ribbon').textContent, big: document.querySelector('.big-wpm svg').getAttribute('aria-label'),
+    acc: document.querySelector('.acc-row b svg').getAttribute('aria-label'),
     podium: [...document.querySelectorAll('.pod:not(.empty)')].map(x => x.className.match(/p(\\d)/)[1] + ':' + x.querySelector('.nm').textContent + ':' + x.querySelector('.w').textContent).sort().join(',') })`);
   const ra = await read(A);
   const rb = await read(B);
@@ -184,6 +184,16 @@ try {
   await A.eval(`location.hash = '#/'`);
   await sleep(800);
   check('A back on the home screen', await A.eval(`!!document.querySelector('.screen-home')`));
+
+  // solo practice: local race against the pace car, best kept in localStorage
+  await A.eval(`document.querySelector('.chip[data-lang="c"]').click(); document.querySelector('#solo').click()`);
+  await A.waitFor(`!!document.querySelector('.screen-race') && document.querySelectorAll('.lane').length === 2`);
+  check('solo race is C with a pace car', await A.eval(`/^C · /.test(document.querySelector('.code-title span').textContent) && document.querySelector('.lane.ghost .who').textContent.includes('Pace car')`));
+  await race(A, 10);
+  await A.waitFor(`!!document.querySelector('.screen-results')`);
+  const solo = await A.eval(`({ ribbon: document.querySelector('.ribbon').textContent, best: JSON.parse(localStorage.getItem('typerace.best') || '{}').c })`);
+  check('solo result shows First run! and saves a best', solo.ribbon === 'First run!' && solo.best && solo.best.wpm > 0, JSON.stringify(solo));
+  await A.shot('e2e-solo-results.png');
 } catch (e) {
   fail++;
   console.log('  FAIL', e.message);

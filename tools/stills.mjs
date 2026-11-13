@@ -101,7 +101,7 @@ try {
     const pods = [...document.querySelectorAll('.pod:not(.empty)')].map((p) => ({
       place: Number(p.className.match(/p(\\d)/)[1]), name: p.querySelector('.nm').textContent, wpm: Number(p.querySelector('.w').textContent), avatar: Number(p.dataset.avatar) }));
     const meta = document.querySelector('.result-sub').textContent.split(' · ');
-    const cv = await m.drawCard({ wpm: Number(document.querySelector('.big-wpm svg').getAttribute('aria-label')), accuracy: parseFloat(document.querySelector('.acc-row b').textContent),
+    const cv = await m.drawCard({ wpm: Number(document.querySelector('.big-wpm svg').getAttribute('aria-label')), accuracy: parseFloat(document.querySelector('.acc-row b svg').getAttribute('aria-label')),
       place, of, lang: meta[0].toLowerCase(), title: meta[1], room: meta[2], podium: pods, car: 0 });
     return cv.toDataURL('image/png');
   })()`);

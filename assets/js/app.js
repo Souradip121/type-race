@@ -2,7 +2,7 @@
 import { LANGS, SNIPPETS, typedLines, forLang } from './snippets.js';
 import {
   CARS, carSVG, avatarSVG, flagSVG, trophySVG, crownSVG, boltSVG, sightSVG, sparkSVG, iconSVG,
-  installFrames, AVATAR_COUNT, numSVG,
+  installFrames, AVATAR_COUNT, numSVG, wordmarkSVG,
 } from './sprites.js';
 import { Typist } from './engine.js';
 import { rpc, serverNow, joinChannel, leaveBeacon } from './net.js';
@@ -110,7 +110,7 @@ function syntax(lang, text) {
 const header = ({ back = null, backLabel = 'Back' } = {}) => `
   <header class="mast${back ? ' has-back' : ''}">
     ${back ? `<a class="back" href="${back}" aria-label="${esc(backLabel)}">${iconSVG('back')}</a>` : ''}
-    <h1 class="logo">${flagSVG()}Type Race${flagSVG()}</h1>
+    <h1 class="logo">${flagSVG()}${wordmarkSVG()}${flagSVG()}</h1>
     ${back ? '<span aria-hidden="true"></span>' : ''}
   </header>`;
 
@@ -122,7 +122,7 @@ const laneHTML = (r) => `
     <span class="fr av sm">${avatarSVG(r.avatar)}</span>
     <div class="track">
       <div class="who"><span>${esc(r.name)}</span><small>${esc(r.note || '')}</small></div>
-      <div class="road"><i class="trail"></i><span class="rider">${carSVG(r.car)}</span></div>
+      <div class="road"><span class="rider"><i class="trail"></i>${carSVG(r.car)}</span></div>
     </div>
   </li>`;
 
@@ -187,7 +187,7 @@ function raceScreen({ snippet, lanes, meId, startPerf, onFinish, onProgress }) {
   view.innerHTML = `
   <section class="screen screen-race">
     <header class="mast race-mast">
-      <h1 class="logo">Type Race</h1>
+      <h1 class="logo">${wordmarkSVG()}</h1>
       <span class="clock">${flagSVG()}<span class="t">00:00</span></span>
     </header>
     <section class="fr code-card" style="--cols:${longest}">
@@ -202,7 +202,7 @@ function raceScreen({ snippet, lanes, meId, startPerf, onFinish, onProgress }) {
     <section class="fr stats" aria-label="Your speed">
       <div class="stat">${boltSVG()}<div><b class="wpm-n">${numSVG(0)}</b><small>WPM</small></div></div>
       <span class="sep"></span>
-      <div class="stat">${sightSVG()}<div><b class="acc-n">${numSVG(100)}<i>%</i></b><small>accuracy</small></div></div>
+      <div class="stat">${sightSVG()}<div><b class="acc-n">${numSVG('100%')}</b><small>accuracy</small></div></div>
     </section>
     <ol class="lanes">${lanes.map(laneHTML).join('')}</ol>
     <div class="countdown" hidden><b></b></div>
@@ -366,7 +366,7 @@ function raceScreen({ snippet, lanes, meId, startPerf, onFinish, onProgress }) {
       const w = ms > 1500 ? round(t.wpm(ms)) : 0;
       if (w !== shownW) { shownW = w; wpmEl.innerHTML = numSVG(w); }
       const a = round(t.accuracy);
-      if (a !== shownA) { shownA = a; accEl.innerHTML = `${numSVG(a)}<i>%</i>`; }
+      if (a !== shownA) { shownA = a; accEl.innerHTML = numSVG(`${a}%`); }
       controller.onTick && controller.onTick(ms);
     }
   };
@@ -405,13 +405,13 @@ function showHome() {
       <p class="notice red fr" id="f-err" hidden></p>
       <button class="btn btn-yellow" type="submit">${inkFlag()}Make a room${inkFlag()}</button>
     </form>
+    <button class="btn btn-outline solo-btn" type="button" id="solo">${iconSVG('play')}Practise solo</button>
     <div class="or">or join with a code</div>
     <form class="join-row" id="join" novalidate>
       <label class="sr" for="f-code">Room code</label>
       <input class="fr field code-in" id="f-code" maxlength="5" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="5-letter code">
       <button class="btn btn-outline" type="submit">Join</button>
     </form>
-    <div class="solo-row"><button class="link-btn" type="button" id="solo">Practise solo first</button></div>
     <p class="fineprint">Real code: C, Python or Java, 4 to 8 lines. Indents are typed for you. WPM is characters ÷ 5 per minute. Up to 6 racers per room; rooms vanish after 24 hours. No sign-up.</p>
     <footer class="foot">Made by <a href="https://www.instagram.com/souradip.sh/" rel="noopener">@souradip.sh</a> · <a href="https://github.com/Souradip121/type-race" rel="noopener">open source</a></footer>
   </section>`;
@@ -505,7 +505,7 @@ function soloResults({ lang, snippet, res, isBest, fair, prevBest, inRoom }) {
       <div class="big-unit">WPM</div>
       <div class="ribbon-row">${flagSVG()}<span class="ribbon ${!fair ? 'red' : isBest ? 'yellow' : ''}">${!fair ? 'Not counted' : isBest ? (prevBest ? 'New best!' : 'First run!') : 'Practice'}</span>${flagSVG()}</div>
       <div class="rule"></div>
-      <div class="acc-row">${sightSVG()}<div><b>${round(res.accuracy)}%</b><small>accuracy</small></div></div>
+      <div class="acc-row">${sightSVG()}<div><b>${numSVG(`${round(res.accuracy)}%`)}</b><small>accuracy</small></div></div>
       <p class="result-sub">${esc(langLabel(lang))} · ${esc(snippet.title)}</p>
     </section>
     ${best ? `<div class="fr solo-best">${carSVG(0)}<span>Your best in ${esc(langLabel(lang))}: <b>${round(best.wpm)} WPM</b>${isBest && prevBest ? ` (was ${round(prevBest.wpm)})` : ''}</span></div>` : ''}
@@ -641,6 +641,8 @@ function decideView(s) {
 
 function apply(s) {
   if (!R || !s || !s.room) return;
+  // Opening a room whose last race already ended lands in the lobby, not on old results.
+  if (!R.state && s.race && s.race.over) R.dismissed = s.race.id;
   R.state = s;
   if (!s.me && !R.joining && !R.joinErr) {
     const name = store.get('name', '');
@@ -774,6 +776,7 @@ function updateLobby(s) {
 function startSoloInRoom() {
   if (!R || !R.state) return;
   if (R.race) { R.race.destroy(); R.race = null; }
+  if (R.state.race) R.dismissed = R.state.race.id;
   R.view = 'solo';
   R.solo = runSolo({ lang: R.state.room.lang, inRoom: R.code });
 }
@@ -902,7 +905,7 @@ function renderResults(s) {
       <div class="big-unit">WPM</div>
       <div class="ribbon-row">${flagSVG()}<span class="ribbon ${ribbonCls}">${ribbon}</span>${flagSVG()}</div>
       <div class="rule"></div>
-      <div class="acc-row">${sightSVG()}<div><b>${round(acc)}%</b><small>accuracy</small></div></div>
+      <div class="acc-row">${sightSVG()}<div><b>${numSVG(`${round(acc)}%`)}</b><small>accuracy</small></div></div>
       <p class="result-sub">${esc(langLabel(race.snippet.lang))} · ${esc(race.snippet.title)} · ${esc(s.room.name)}</p>
       ${R.finishErr && R.localDone === race.id ? `<p class="notice red fr result-error">${esc(errText({ message: R.finishErr }))}</p>` : ''}
     </section>
